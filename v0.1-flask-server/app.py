@@ -172,68 +172,6 @@ def get_image_url(title):
         return "https://images.pexels.com/photos/3560044/pexels-photo-3560044.jpeg"  # Default image as fallback
 
 
-# def make_SEO_optimisation(title, blog_content, image_url):
-#     try:
-#         client = OpenAI(
-#             base_url="https://openrouter.ai/api/v1",
-#             api_key="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",
-#         )
-
-#         prompt = f"""Transform this blog content into an SEO-optimized HTML page with inline CSS styling.
-                
-#                 TITLE: {title}
-
-#                 BLOG CONTENT:
-#                 {blog_content[:4000]}  # Limiting to avoid token limits
-
-#                 FEATURED IMAGE URL: {image_url}
-
-#                 Requirements:
-#                 1. Create HTML with inline CSS that makes the blog visually appealing and easy to read
-#                 2. Use a responsive design that works well on mobile and desktop
-#                 3. Include proper semantic HTML elements (h1, h2, p, etc.)
-#                 4. Optimize for SEO with:
-#                 - Proper heading hierarchy
-#                 - Meta description (commented at the top)
-#                 - Alt text for images
-#                 - Internal linking where appropriate
-#                 - Keyword-rich but natural content
-#                 5. Add a featured image at the top using the provided image URL
-#                 6. Create a table of contents
-#                 7. Include social sharing buttons
-#                 8. Add a CTA at the end
-#                 9. Make sure the design is modern, clean, and professional
-
-#                 Return ONLY the complete HTML+CSS code with no additional commentary."""
-
-#         completion = client.chat.completions.create(
-#         extra_headers={
-#             "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
-#             "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
-#         },
-#         extra_body={},
-#         model="deepseek/deepseek-r1-zero:free",
-#         messages=[
-#             {
-#             "role": "system", 
-#             "content": "You are an expert in SEO and web design, specializing in creating beautiful, optimized blog content with HTML and CSS."
-#             },
-#             {
-#             "role": "user",
-#             "content": prompt
-#             }
-#         ]
-#         )
-#         content = completion.choices[0].message.content
-#         print("SEO optimization completed")
-#         return content
-        
-#     except Exception as e:
-#         error_msg = f"[ERROR] SEO optimization failed: {e}"
-#         print(error_msg)
-#         return f"[ERROR] SEO optimization failed: {str(e)}"
-
-
 
 
 def make_SEO_optimisation(title, blog_content, image_url):
