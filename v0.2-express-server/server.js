@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
-import blogRoute from "./routes/blogRoute";
+import blogRoute from "./routes/blogRoute.js";
 
 const app = express();
 const PORT = process.env.PORT;

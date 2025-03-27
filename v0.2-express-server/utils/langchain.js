@@ -5,9 +5,9 @@ import { ChatPromptTemplate } from "@langchain/core/prompts";
 import dotenv from "dotenv";
 dotenv.config({path: "../.env"});
 
-const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const FIRECRAWL_API_KEY = process.env.FIRECRAWL_API_KEY;
-// console.log(GROQ_API_KEY, FIRECRAWL_API_KEY);
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+// console.log(FIRECRAWL_API_KEY, GROQ_API_KEY);
 
 export const llama = async (userPrompt, scrapeContent) => {
     const llamaMeta = new ChatGroq({
@@ -30,9 +30,9 @@ export const llama = async (userPrompt, scrapeContent) => {
         ]
     ]);
     const prompt = await promptTemplate.invoke({ topic: userPrompt, realTimeData: scrapeContent });
-    console.log(prompt);
+    // console.log(prompt);
     const response = await llamaMeta.invoke(prompt);
-    console.log(response.content);
+    // console.log(response.content);
     return response.content;
 };
 
@@ -55,7 +55,7 @@ export const deepseek = async (blogTitle, blogContent, imageUrl) => {
                 Requirements:
                 1. Create HTML with inline CSS that makes the blog visually appealing and easy to read
                 2. Use a responsive design that works well on mobile and desktop
-                3. Include proper semantic HTML elements (h1, h2, p, etc.)
+                3. Include proper semantic HTML elements (h2, h3, p, etc.)
                 4. Optimize for SEO with:
                 - Proper heading hierarchy
                 - Alt text for images
@@ -67,15 +67,28 @@ export const deepseek = async (blogTitle, blogContent, imageUrl) => {
                 8. Add a CTA at the end
                 9. Make sure the design is modern, clean, and professional
 
-                Return ONLY the complete HTML+CSS code with no additional commentary.`
+                Return ONLY the complete HTML+CSS code with no additional commentary and markdown.`
             ]
     ]);
     const prompt = await promptTemplate.invoke({blogTitle, blogContent, imageUrl});
-    console.log(prompt);
+    // console.log(prompt);
     const response = await deepseekAlibabaCloud.invoke(prompt);
-    console.log(response.content);
-    return response.content;
+    // console.log(response.content);
+    // return response.content;
+    return response.content.split('</think>').pop().trim();
 };
+
+// const deepseekTest = async (text) => {
+//     const deepseekAlibabaCloud = new ChatGroq({
+//         model: "deepseek-r1-distill-llama-70b",
+//         apiKey: GROQ_API_KEY,
+//     });
+//     const response = await deepseekAlibabaCloud.invoke(text);
+    
+//     const cleanedResponse = response.content.split('</think>').pop().trim();
+//     console.log(cleanedResponse);
+// };
+// deepseekTest("tell me paradox sentence");
 
 export const gemma = async (blogContent) => {
     const gemmaGoogle = new ChatGroq({
@@ -97,9 +110,9 @@ export const gemma = async (blogContent) => {
         ]
     ]);
     const prompt = await promptTemplate.invoke({blogContent});
-    console.log(prompt);
+    // console.log(prompt);
     const response = await gemmaGoogle.invoke(prompt);
-    console.log(response.content);
+    // console.log(response.content);
     return response.content;
 };
 
@@ -115,6 +128,6 @@ export const firecrawl = async (url) => {
     },
     });
     const docs = await loader.load();
-    console.log(docs[0].metadata);
+    // console.log(docs[0].metadata);
     return docs[0].metadata;
 }

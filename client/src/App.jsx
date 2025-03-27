@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { SparklesPreview } from "./components/sparkle/SparklesPreview";
 
@@ -13,7 +13,15 @@ function App() {
   const [error, setError] = useState("");
 
   const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-  console.log("** ", VITE_BACKEND_URL, " **");
+  // console.log("** ", VITE_BACKEND_URL, " **");
+
+  useEffect(() => {
+    const wakeUpSidd = async () => {
+      const response = await axios.get(`${VITE_BACKEND_URL}/ping`);
+      console.log(response.data);
+    }
+    wakeUpSidd();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,11 +29,11 @@ function App() {
     setError("");
     setLink("");
     try {
-      const response = await axios.post(`${VITE_BACKEND_URL}/api/v1/auto-publish`, {
-        url,
-        title,
-        accessToken,
-        blogId,
+      const response = await axios.post(`${VITE_BACKEND_URL}/api/v1/blog`, {
+        userUrl: url,
+        userPrompt: title,
+        userAccessToken: accessToken,
+        userBlogerId: blogId,
       });
       setLink(response.data.link);
     } catch (err) {
@@ -37,7 +45,7 @@ function App() {
   };
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+    <div className="flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
       <SparklesPreview />
       <div className="w-full max-w-lg p-8 bg-gray-800 bg-opacity-80 backdrop-blur-lg rounded-2xl shadow-xl border border-gray-700">
         <h2 className="text-2xl font-bold text-center mb-6 text-blue-400">
@@ -60,11 +68,11 @@ function App() {
 
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">
-              Blog Title
+              Blog Title/Prompt
             </label>
             <input
               type="text"
-              placeholder="Enter blog title"
+              placeholder="Enter blog title/prompt"
               className="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-400 outline-none transition-all"
               required
               value={title}

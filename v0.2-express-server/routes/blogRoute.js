@@ -1,8 +1,8 @@
 import express from "express";
-import { blogController } from "../controllers/blogController";
+import { blogController } from "../controllers/blogController.js";
 
 const router = express.Router();
 
 router.post("/blog", blogController);
 
-module.exports = router;
+export default router;
